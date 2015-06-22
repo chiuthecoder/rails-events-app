@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+	<% if signed_in? %>	  
+	<!-- navbar -->
+	<nav class="navbar navbar-default navbar-static-top" style="height:110px;">
+	  <div class="container">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#"><%= image_tag "logo-white.png" %></a>
+	    </div>
+	    <div id="navbar" class="navbar-collapse collapse">
+
+	      <ul class="nav navbar-nav">
+	      	<li style="width:40px: color: white;">.</li>
+	        <li><a href="/events">All Events</a></li>
+	        <li><a href="/events/new">Add Event</a></li>
+	        <li>
+
+					</li>
+	      </ul>
+
+	      <ul class="nav navbar-nav navbar-right">
+	       	<li>
+					<a href="/users/<%= @user.id %>/edit">Edit Profile</a>	
+	        </li>
+	        <li><%= link_to('log off', signout_path) %></li>
+
+
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+	<!--END nav-->
+
+<% else %>
+	<!-- navbar -->
+	<nav class="navbar navbar-default navbar-static-top" style="height:110px;">
+	  <div class="container">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#"><%= image_tag "logo-white.png" %></a>
+	    </div>
+	    <div id="navbar" class="navbar-collapse collapse">
+
+	      <ul class="nav navbar-nav">
+
+	        <li>
+					</li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="/signup">Register</a></li>
+	        <li><a href="/signin">Sign In</a></li>
+
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+	<!--END nav-->
+	<% end %>
+	<!-- user specific msg-->
+	<div class="container">
+		<div class="row">	
+				<% if signed_in? %>
+				<div class="col-md-9">
+					Welcome, <%= @user.first_name %> 
+				</div>
+				<div class="col-md-3 text-right">		
+					<%= Time.now.strftime("%m/%d/%Y") %>
+				</div>
+				<% end %>
+		</div>
+		</div>
+	</div>	
+	<!-- main content -->
+	<div class="container">
+		<div class="row">
+			<%= yield %>
+		</div>
+	</div>
+
+</body>
+</html>

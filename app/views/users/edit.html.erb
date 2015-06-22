@@ -1,0 +1,20 @@
+<div class="col-md-5">
+<h2>Edit user</h2>
+<form action='/users/<%= @user.id %>' method='post'>
+  <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+  <input type='hidden' name="_method" value="patch">
+  <label>First Name</label>
+  <input type='text' name='user[first_name]' value='<%= @user.first_name %>' class='form-control'/>
+  <label>Last Name</label>
+  <input type='text' name='user[last_name]' value='<%= @user.last_name %>' class='form-control'/>
+  <label>Email</label>
+  <input type='text' name='user[email]' value='<%= @user.email %>' class='form-control'/>
+  <label>City</label>
+  <input type='text' name='user[city]' value='<%= @user.city %>' class='form-control'/>
+  <label>State</label>
+  <input type='text' name='user[state]' value='<%= @user.state %>' class='form-control'/>
+  <input type='submit' value='Update' class="btn btn-primary">
+</form>
+<!-- <a href='/users/show'>Show</a>|
+<a href='/users/index'>Back</a> -->
+</div>

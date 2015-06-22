@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  speaker: MyString
+  title: MyString
+  content: MyText
+  date: 2015-06-16 17:58:20
+  branch: MyString
+  user_id: 
+  branch_id: 
+
+two:
+  speaker: MyString
+  title: MyString
+  content: MyText
+  date: 2015-06-16 17:58:20
+  branch: MyString
+  user_id: 
+  branch_id: 

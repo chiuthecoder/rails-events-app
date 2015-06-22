@@ -1,0 +1,23 @@
+<div class="col-md-5">
+<h1>Register</h1>
+<p>This where you register!</p>
+<% if flash[:errors] %>
+	<% flash[:errors].each do |error| %>
+		<p><%= error %></p>
+	<% end %>
+<% end %>
+<%= simple_form_for(@user) do |f| %>
+  <%= f.input :first_name, input_html: { class: 'form-control' } %>
+  <%= f.input :last_name, input_html: { class: 'form-control' } %>
+  <%= f.input :email, input_html: { class: 'form-control' } %>
+  <%= f.input :password, input_html: { class: 'form-control' } %>
+  <%= f.input :password_confirmation, input_html: { class: 'form-control' } %>
+  <%= f.input :city, input_html: { class: 'form-control' } %>
+  <%= f.input :state, input_html: { class: 'form-control' },
+  :collection =>['AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY', 'AE', 'AA', 'AP']
+  %>
+  <%= f.button :submit %>
+<% end %>
+</div>
+
+

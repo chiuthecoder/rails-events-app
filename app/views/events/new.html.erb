@@ -1,0 +1,41 @@
+
+<div class="col-md-5">
+<% if flash[:errors] %>
+  <% flash[:errors].each do |error| %>
+    <p><%= error %></p>
+  <% end %>
+<% end %>
+<h1>Add New Event</h1>
+<form action='/events' method='post' enctype="multipart/form-data">
+  <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+  <input type='hidden' name='event[id]' value='<%= @user.id %>'>
+  <label>Speaker Name</label>
+  <input type='text' name='event[speaker]' placeholder='name' class='form-control'/>
+  <br>
+  <label>Event Title</label>
+  <input type='text' name='event[title]' placeholder='title' class='form-control'/>
+  <br>
+  <label>Summary</label>
+  <input type='text' name='event[content]' placeholder='content' class='form-control'/>
+  <br>
+  <label>Event Date</label>
+  <input type='date' name='event[date]' placeholder='datetime' class='form-control'/> 
+
+
+  <br>
+  <label>Event Location</label>
+  <select name='event[branch_id]' class='form-control'>
+    <% @branches.each do |branch| %>
+    <option value='<%= branch.id %>'><%= branch.name %></li>
+    <% end %>
+  </select>
+
+  <label for="event_avatar">Avatar</label>
+  <input type="file" name="event[avatar]" id="event_avatar">
+
+  <input type='submit' value='Create' class='btn btn-primary'/>
+
+</form>
+</div>
+
+

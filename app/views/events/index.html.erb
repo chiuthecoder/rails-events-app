@@ -1,0 +1,58 @@
+
+<div class="col-md-12">
+<h1>Event List</h1>
+
+<% @branches.each do |branch| %>
+<h3>Event from <%= branch.name %>:</h3>
+<table class="table">
+	<tr>
+		<td>Speaker</td>
+		<td>Title</td>
+		<td>Summary</td>
+		<td>Date</td>
+		<td>Location</td>
+		<td>Actions</td>
+		<td>Actions</td>
+	</tr>
+	<% branch.events.each do |event| %>
+	<tr>
+		<td><%= event.speaker %></td>
+		<td><a href="/events/<%= event.id %>"><%= event.title %></a></td>
+		<td><%= event.content %></td>
+		<td><%= event.date.strftime("%m/%d/%Y") %></td>
+		<td><%= event.branch.name %></td>
+		<td>		
+				<div>
+					
+					<% if event.joining_users.where(id: @user.id).empty? %> 
+						<%= Attendee.where(event_id: event.id).count %> Join				
+						<form action='/attendees' method='post'>
+						  <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+						  <input type='hidden' name='attendee[user_id]' value='<%= @user.id %>'>
+						  <input type='hidden' name='attendee[event_id]' value='<%= event.id %>'>
+						  <% if @user.id && event.user_id %>
+						  <input type='submit' value='Join' />
+						  <% end %>
+						</form>
+					<% else %>
+							<p>joining</p>
+							<a href="/attendees/<%= event.id %>" data-method='delete'>Cancel Join</a> 
+					<% end %>
+				</div>
+			</td>
+			<td>
+			<% if @user.id == event.user_id %>
+						<a href="/events/<%= event.id %>" data-method='delete'>Destroy</a> |
+						<a href="/events/<%= event.id %>/edit">Edit</a>
+			<% end %>
+			</td>
+		</tr>
+		<% end %>
+</table>
+<% end %>
+
+<!-- <h2><a href="events/new">New Event</a></h2> -->
+</div>
+
+
+

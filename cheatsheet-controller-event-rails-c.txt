@@ -1,0 +1,944 @@
+Last login: Wed Jun 17 08:14:34 on ttys002
+Chiuhuas-MBP:login4-event4.4 chiu$ rails c
+Loading development environment (Rails 4.2.1)
+2.2.1 :001 > Hirb.enable
+ => true 
+2.2.1 :002 > User.all
+  User Load (1.6ms)  SELECT "users".* FROM "users"
++----+------------+-----------+-----------------------+----------------------------------+-----------------------------------+-------------------------+-------------------------+---------+------------+
+| id | first_name | last_name | email                 | encrypted_password               | salt                              | created_at              | updated_at              | city    | state      |
++----+------------+-----------+-----------------------+----------------------------------+-----------------------------------+-------------------------+-------------------------+---------+------------+
+| 1  | Chiuhua    | Chen      | chiu.design@gmail.com | de4616aacb1d78963e893eca7ffe1... | da3edb94a5790a25afefb12941fc75... | 2015-06-12 00:47:12 UTC | 2015-06-17 00:48:43 UTC | Seattle | Washington |
+| 2  | Taka       | Chen      | taka@gmail.com        | 356a0920ff57381924eed4d7d73f3... | 252a5f3015073c0ea405d77f4ffe93... | 2015-06-12 00:48:11 UTC | 2015-06-17 00:51:13 UTC | Seattle | WA         |
+| 3  | Zoe        | Smith     | zoe@gmail.com         | 738c2c5d3d8e9559cd1c0af932499... | 61bf8940336397048558fb27ec67ed... | 2015-06-17 00:00:13 UTC | 2015-06-17 00:00:13 UTC |         |            |
+| 4  | Fox        | Ma        | fox@gmail.com         | d9b4493d6c34e4792f71b66b8f30c... | 36b780168689008e541880769ae178... | 2015-06-17 00:01:24 UTC | 2015-06-17 00:01:24 UTC | Seattle | WA         |
++----+------------+-----------+-----------------------+----------------------------------+-----------------------------------+-------------------------+-------------------------+---------+------------+
+4 rows in set
+2.2.1 :003 > Event.all
+  Event Load (0.3ms)  SELECT "events".* FROM "events"
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date | branch | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+| 7  |         |       | Innotvation   |      |        | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |      |        | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |      |        | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |      |        | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |      |        | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+5 rows in set
+2.2.1 :004 > Event.first.joining_users
+  Event Load (0.3ms)  SELECT  "events".* FROM "events"  ORDER BY "events"."id" ASC LIMIT 1
+  User Load (0.2ms)  SELECT "users".* FROM "users" INNER JOIN "attendees" ON "users"."id" = "attendees"."user_id" WHERE "attendees"."event_id" = ?  [["event_id", 7]]
+ => #<ActiveRecord::Associations::CollectionProxy []> 
+2.2.1 :005 > Event.first.joining_users.new
+  Event Load (0.4ms)  SELECT  "events".* FROM "events"  ORDER BY "events"."id" ASC LIMIT 1
++----+------------+-----------+-------+--------------------+------+------------+------------+------+-------+
+| id | first_name | last_name | email | encrypted_password | salt | created_at | updated_at | city | state |
++----+------------+-----------+-------+--------------------+------+------------+------------+------+-------+
+|    |            |           |       |                    |      |            |            |      |       |
++----+------------+-----------+-------+--------------------+------+------------+------------+------+-------+
+1 row in set
+2.2.1 :006 > Event.first.joining_users.all
+  Event Load (0.4ms)  SELECT  "events".* FROM "events"  ORDER BY "events"."id" ASC LIMIT 1
+  User Load (0.2ms)  SELECT "users".* FROM "users" INNER JOIN "attendees" ON "users"."id" = "attendees"."user_id" WHERE "attendees"."event_id" = ?  [["event_id", 7]]
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+| id | first_name | last_name | email          | encrypted_password                     | salt                                    | created_at              | updated_at              | city    | state |
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+| 2  | Taka       | Chen      | taka@gmail.com | 356a0920ff57381924eed4d7d73f30096c5... | 252a5f3015073c0ea405d77f4ffe9351f719... | 2015-06-12 00:48:11 UTC | 2015-06-17 00:51:13 UTC | Seattle | WA    |
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+1 row in set
+2.2.1 :007 > Attendee.all
+  Attendee Load (0.4ms)  SELECT "attendees".* FROM "attendees"
++----+---------+----------+-------------------------+-------------------------+
+| id | user_id | event_id | created_at              | updated_at              |
++----+---------+----------+-------------------------+-------------------------+
+| 26 | 1       | 8        | 2015-06-17 16:46:44 UTC | 2015-06-17 16:46:44 UTC |
+| 27 | 1       | 9        | 2015-06-17 16:46:48 UTC | 2015-06-17 16:46:48 UTC |
+| 28 | 2       | 7        | 2015-06-17 17:01:28 UTC | 2015-06-17 17:01:28 UTC |
++----+---------+----------+-------------------------+-------------------------+
+3 rows in set
+2.2.1 :008 > Event.all
+  Event Load (0.4ms)  SELECT "events".* FROM "events"
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date | branch | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+| 7  |         |       | Innotvation   |      |        | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |      |        | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |      |        | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |      |        | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |      |        | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+5 rows in set
+2.2.1 :009 > Event.first.joining_users.joins(:event).select("content", "first_name")
+  Event Load (0.4ms)  SELECT  "events".* FROM "events"  ORDER BY "events"."id" ASC LIMIT 1
+Hirb Error: Association named 'event' was not found on User; perhaps you misspelled it?
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/associations/join_dependency.rb:218:in `find_reflection'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/associations/join_dependency.rb:223:in `block in build'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/associations/join_dependency.rb:222:in `each'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/associations/join_dependency.rb:222:in `map'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/associations/join_dependency.rb:222:in `build'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/associations/join_dependency.rb:99:in `initialize'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/query_methods.rb:1040:in `new'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/query_methods.rb:1040:in `build_joins'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/query_methods.rb:866:in `build_arel'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/query_methods.rb:858:in `arel'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:638:in `exec_queries'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/association_relation.rb:19:in `exec_queries'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:514:in `load'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:243:in `to_a'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/delegation.rb:46:in `to_ary'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `Array'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `determine_output_class'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:53:in `format_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:205:in `render_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:123:in `view_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:201:in `view_or_page_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:187:in `output_value'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:490:in `block (2 levels) in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:623:in `signal_status'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:486:in `block in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:245:in `block (2 levels) in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `loop'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `block in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:485:in `eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:395:in `block in start'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:110:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:9:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:68:in `console'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands.rb:17:in `<top (required)>'
+    bin/rails:8:in `require'
+    bin/rails:8:in `<main>'
+2.2.1 :010 > Event.first.joining_users.all
+  Event Load (0.4ms)  SELECT  "events".* FROM "events"  ORDER BY "events"."id" ASC LIMIT 1
+  User Load (0.2ms)  SELECT "users".* FROM "users" INNER JOIN "attendees" ON "users"."id" = "attendees"."user_id" WHERE "attendees"."event_id" = ?  [["event_id", 7]]
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+| id | first_name | last_name | email          | encrypted_password                     | salt                                    | created_at              | updated_at              | city    | state |
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+| 2  | Taka       | Chen      | taka@gmail.com | 356a0920ff57381924eed4d7d73f30096c5... | 252a5f3015073c0ea405d77f4ffe9351f719... | 2015-06-12 00:48:11 UTC | 2015-06-17 00:51:13 UTC | Seattle | WA    |
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+1 row in set
+2.2.1 :011 > Event.find(2).joining_users.all
+  Event Load (0.3ms)  SELECT  "events".* FROM "events" WHERE "events"."id" = ? LIMIT 1  [["id", 2]]
+ActiveRecord::RecordNotFound: Couldn't find Event with 'id'=2
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/core.rb:155:in `find'
+	from (irb):11
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:110:in `start'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:9:in `start'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:68:in `console'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands.rb:17:in `<top (required)>'
+	from bin/rails:8:in `require'
+	from bin/rails:8:in `<main>'
+2.2.1 :012 > Event.first.joining_users.all
+  Event Load (0.4ms)  SELECT  "events".* FROM "events"  ORDER BY "events"."id" ASC LIMIT 1
+  User Load (0.2ms)  SELECT "users".* FROM "users" INNER JOIN "attendees" ON "users"."id" = "attendees"."user_id" WHERE "attendees"."event_id" = ?  [["event_id", 7]]
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+| id | first_name | last_name | email          | encrypted_password                     | salt                                    | created_at              | updated_at              | city    | state |
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+| 2  | Taka       | Chen      | taka@gmail.com | 356a0920ff57381924eed4d7d73f30096c5... | 252a5f3015073c0ea405d77f4ffe9351f719... | 2015-06-12 00:48:11 UTC | 2015-06-17 00:51:13 UTC | Seattle | WA    |
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+1 row in set
+2.2.1 :013 > Event.all
+  Event Load (0.4ms)  SELECT "events".* FROM "events"
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date | branch | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+| 7  |         |       | Innotvation   |      |        | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |      |        | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |      |        | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |      |        | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |      |        | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+5 rows in set
+2.2.1 :014 > Event.find(7).joining_users
+  Event Load (0.3ms)  SELECT  "events".* FROM "events" WHERE "events"."id" = ? LIMIT 1  [["id", 7]]
+  User Load (0.2ms)  SELECT "users".* FROM "users" INNER JOIN "attendees" ON "users"."id" = "attendees"."user_id" WHERE "attendees"."event_id" = ?  [["event_id", 7]]
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+| id | first_name | last_name | email          | encrypted_password                     | salt                                    | created_at              | updated_at              | city    | state |
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+| 2  | Taka       | Chen      | taka@gmail.com | 356a0920ff57381924eed4d7d73f30096c5... | 252a5f3015073c0ea405d77f4ffe9351f719... | 2015-06-12 00:48:11 UTC | 2015-06-17 00:51:13 UTC | Seattle | WA    |
++----+------------+-----------+----------------+----------------------------------------+-----------------------------------------+-------------------------+-------------------------+---------+-------+
+1 row in set
+2.2.1 :015 > Event.find(8).joining_users
+  Event Load (0.3ms)  SELECT  "events".* FROM "events" WHERE "events"."id" = ? LIMIT 1  [["id", 8]]
+  User Load (0.2ms)  SELECT "users".* FROM "users" INNER JOIN "attendees" ON "users"."id" = "attendees"."user_id" WHERE "attendees"."event_id" = ?  [["event_id", 8]]
++----+------------+-----------+-----------------------+----------------------------------+-----------------------------------+-------------------------+-------------------------+---------+------------+
+| id | first_name | last_name | email                 | encrypted_password               | salt                              | created_at              | updated_at              | city    | state      |
++----+------------+-----------+-----------------------+----------------------------------+-----------------------------------+-------------------------+-------------------------+---------+------------+
+| 1  | Chiuhua    | Chen      | chiu.design@gmail.com | de4616aacb1d78963e893eca7ffe1... | da3edb94a5790a25afefb12941fc75... | 2015-06-12 00:47:12 UTC | 2015-06-17 00:48:43 UTC | Seattle | Washington |
++----+------------+-----------+-----------------------+----------------------------------+-----------------------------------+-------------------------+-------------------------+---------+------------+
+1 row in set
+2.2.1 :016 > Event.all
+  Event Load (0.5ms)  SELECT "events".* FROM "events"
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date | branch | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+| 7  |         |       | Innotvation   |      |        | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |      |        | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |      |        | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |      |        | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |      |        | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
+| 12 |         |       | 11            |      |        | 2       |           | 2015-06-17 17:41:53 UTC | 2015-06-17 17:41:53 UTC |
++----+---------+-------+---------------+------+--------+---------+-----------+-------------------------+-------------------------+
+6 rows in set
+2.2.1 :017 > Event.all
+  Event Load (0.5ms)  SELECT "events".* FROM "events"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 7  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |                         |                            | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
+| 12 |         |       | 11            |                         |                            | 2       |           | 2015-06-17 17:41:53 UTC | 2015-06-17 17:41:53 UTC |
+| 13 | 22      | 22    | 22            | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce449baa18> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+7 rows in set
+2.2.1 :018 > Event.all
+  Event Load (0.7ms)  SELECT "events".* FROM "events"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 7  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |                         |                            | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
+| 12 |         |       | 11            |                         |                            | 2       |           | 2015-06-17 17:41:53 UTC | 2015-06-17 17:41:53 UTC |
+| 13 | 22      | 22    | 22            | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce44962408> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
+| 14 | 33      | 33    | 33            |                         |                            | 2       |           | 2015-06-17 17:49:25 UTC | 2015-06-17 17:49:25 UTC |
+| 15 | 44      | 44    | 44            |                         |                            | 2       |           | 2015-06-17 17:49:31 UTC | 2015-06-17 17:49:31 UTC |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+9 rows in set
+2.2.1 :019 > Event.all
+  Event Load (1.0ms)  SELECT "events".* FROM "events"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 7  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |                         |                            | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
+| 12 |         |       | 11            |                         |                            | 2       |           | 2015-06-17 17:41:53 UTC | 2015-06-17 17:41:53 UTC |
+| 13 | 22      | 22    | 22            | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce44901108> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
+| 14 | 33      | 33    | 33            |                         |                            | 2       |           | 2015-06-17 17:49:25 UTC | 2015-06-17 17:49:25 UTC |
+| 15 | 44      | 44    | 44            |                         |                            | 2       |           | 2015-06-17 17:49:31 UTC | 2015-06-17 17:49:31 UTC |
+| 16 | 55      | 55    | 55            |                         | #<Branch:0x007fce448f0fd8> | 2       | 3         | 2015-06-17 17:50:19 UTC | 2015-06-17 17:50:19 UTC |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+10 rows in set
+2.2.1 :020 > Event.all
+  Event Load (0.4ms)  SELECT "events".* FROM "events"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 7  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |                         |                            | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
+| 12 |         |       | 11            |                         |                            | 2       |           | 2015-06-17 17:41:53 UTC | 2015-06-17 17:41:53 UTC |
+| 13 | 22      | 22    | 22            | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce4488ab20> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
+| 14 | 33      | 33    | 33            |                         |                            | 2       |           | 2015-06-17 17:49:25 UTC | 2015-06-17 17:49:25 UTC |
+| 15 | 44      | 44    | 44            |                         |                            | 2       |           | 2015-06-17 17:49:31 UTC | 2015-06-17 17:49:31 UTC |
+| 16 | 55      | 55    | 55            |                         | #<Branch:0x007fce44878808> | 2       | 3         | 2015-06-17 17:50:19 UTC | 2015-06-17 17:50:19 UTC |
+| 17 | 66      | 66    | 66            |                         | #<Branch:0x007fce4486b6a8> | 2       | 1         | 2015-06-17 17:50:54 UTC | 2015-06-17 17:50:54 UTC |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+11 rows in set
+2.2.1 :021 > Event.all
+  Event Load (1.0ms)  SELECT "events".* FROM "events"
+  Branch Load (0.3ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 7  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |                         |                            | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
+| 12 |         |       | 11            |                         |                            | 2       |           | 2015-06-17 17:41:53 UTC | 2015-06-17 17:41:53 UTC |
+| 13 | 22      | 22    | 22            | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce42520978> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
+| 14 | 33      | 33    | 33            |                         |                            | 2       |           | 2015-06-17 17:49:25 UTC | 2015-06-17 17:49:25 UTC |
+| 15 | 44      | 44    | 44            |                         |                            | 2       |           | 2015-06-17 17:49:31 UTC | 2015-06-17 17:49:31 UTC |
+| 16 | 55      | 55    | 55            |                         | #<Branch:0x007fce4312e030> | 2       | 3         | 2015-06-17 17:50:19 UTC | 2015-06-17 17:50:19 UTC |
+| 17 | 66      | 66    | 66            |                         | #<Branch:0x007fce4310ddf8> | 2       | 1         | 2015-06-17 17:50:54 UTC | 2015-06-17 17:50:54 UTC |
+| 18 | 77      | 77    | 77            | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce430d7898> | 2       | 1         | 2015-06-17 17:51:52 UTC | 2015-06-17 17:51:52 UTC |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+12 rows in set
+2.2.1 :022 > Branch.all
+  Branch Load (0.4ms)  SELECT "branches".* FROM "branches"
++----+---------------------------+-------------------------+-------------------------+
+| id | name                      | created_at              | updated_at              |
++----+---------------------------+-------------------------+-------------------------+
+| 1  | CodingDojo Seattle        | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC |
+| 2  | CodingDojo Silicon Valley | 2015-06-17 01:04:02 UTC | 2015-06-17 01:04:02 UTC |
+| 3  | CodingDojo Los Angeles    | 2015-06-17 01:04:09 UTC | 2015-06-17 01:04:09 UTC |
++----+---------------------------+-------------------------+-------------------------+
+3 rows in set
+2.2.1 :023 > Event.all
+  Event Load (0.5ms)  SELECT "events".* FROM "events"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 1  | 88      | 88    | 88            | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce42755770> |         | 2         | 2015-06-17 18:07:04 UTC | 2015-06-17 18:07:04 UTC |
+| 7  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |                         |                            | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
+| 12 |         |       | 11            |                         |                            | 2       |           | 2015-06-17 17:41:53 UTC | 2015-06-17 17:41:53 UTC |
+| 13 | 22      | 22    | 22            | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce4270f888> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
+| 14 | 33      | 33    | 33            |                         |                            | 2       |           | 2015-06-17 17:49:25 UTC | 2015-06-17 17:49:25 UTC |
+| 15 | 44      | 44    | 44            |                         |                            | 2       |           | 2015-06-17 17:49:31 UTC | 2015-06-17 17:49:31 UTC |
+| 16 | 55      | 55    | 55            |                         | #<Branch:0x007fce426ecb80> | 2       | 3         | 2015-06-17 17:50:19 UTC | 2015-06-17 17:50:19 UTC |
+| 17 | 66      | 66    | 66            |                         | #<Branch:0x007fce4305d7a0> | 2       | 1         | 2015-06-17 17:50:54 UTC | 2015-06-17 17:50:54 UTC |
+| 18 | 77      | 77    | 77            | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce426be870> | 2       | 1         | 2015-06-17 17:51:52 UTC | 2015-06-17 17:51:52 UTC |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+13 rows in set
+2.2.1 :024 > Event.branches.all
+NoMethodError: undefined method `branches' for #<Class:0x007fce431ae0f0>
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/dynamic_matchers.rb:26:in `method_missing'
+	from (irb):24
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:110:in `start'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:9:in `start'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:68:in `console'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands.rb:17:in `<top (required)>'
+	from bin/rails:8:in `require'
+	from bin/rails:8:in `<main>'
+2.2.1 :025 > Event.all
+  Event Load (0.7ms)  SELECT "events".* FROM "events"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 1  | 88      | 88    | 88            | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce4259f098> |         | 2         | 2015-06-17 18:07:04 UTC | 2015-06-17 18:07:04 UTC |
+| 7  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |                         |                            | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
+| 12 |         |       | 11            |                         |                            | 2       |           | 2015-06-17 17:41:53 UTC | 2015-06-17 17:41:53 UTC |
+| 13 | 22      | 22    | 22            | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce424bad58> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
+| 14 | 33      | 33    | 33            |                         |                            | 2       |           | 2015-06-17 17:49:25 UTC | 2015-06-17 17:49:25 UTC |
+| 15 | 44      | 44    | 44            |                         |                            | 2       |           | 2015-06-17 17:49:31 UTC | 2015-06-17 17:49:31 UTC |
+| 16 | 55      | 55    | 55            |                         | #<Branch:0x007fce424618e8> | 2       | 3         | 2015-06-17 17:50:19 UTC | 2015-06-17 17:50:19 UTC |
+| 17 | 66      | 66    | 66            |                         | #<Branch:0x007fce42440b98> | 2       | 1         | 2015-06-17 17:50:54 UTC | 2015-06-17 17:50:54 UTC |
+| 18 | 77      | 77    | 77            | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce424205f0> | 2       | 1         | 2015-06-17 17:51:52 UTC | 2015-06-17 17:51:52 UTC |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+13 rows in set
+2.2.1 :026 > Event.joins(:branch)
+  Event Load (0.4ms)  SELECT "events".* FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 1  | 88      | 88    | 88      | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce42281578> |         | 2         | 2015-06-17 18:07:04 UTC | 2015-06-17 18:07:04 UTC |
+| 13 | 22      | 22    | 22      | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce4122e1a8> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
+| 16 | 55      | 55    | 55      |                         | #<Branch:0x007fce422395e8> | 2       | 3         | 2015-06-17 17:50:19 UTC | 2015-06-17 17:50:19 UTC |
+| 17 | 66      | 66    | 66      |                         | #<Branch:0x007fce4220b7d8> | 2       | 1         | 2015-06-17 17:50:54 UTC | 2015-06-17 17:50:54 UTC |
+| 18 | 77      | 77    | 77      | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce41a6f498> | 2       | 1         | 2015-06-17 17:51:52 UTC | 2015-06-17 17:51:52 UTC |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+5 rows in set
+2.2.1 :027 > Branch.all
+  Branch Load (0.4ms)  SELECT "branches".* FROM "branches"
++----+---------------------------+-------------------------+-------------------------+
+| id | name                      | created_at              | updated_at              |
++----+---------------------------+-------------------------+-------------------------+
+| 1  | CodingDojo Seattle        | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC |
+| 2  | CodingDojo Silicon Valley | 2015-06-17 01:04:02 UTC | 2015-06-17 01:04:02 UTC |
+| 3  | CodingDojo Los Angeles    | 2015-06-17 01:04:09 UTC | 2015-06-17 01:04:09 UTC |
++----+---------------------------+-------------------------+-------------------------+
+3 rows in set
+2.2.1 :028 > Event.joins(:branch).select("branch.name","event.title","event.date")
+  Event Load (2.8ms)  SELECT branch.name, event.title, event.date FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id"
+SQLite3::SQLException: no such column: branch.name: SELECT branch.name, event.title, event.date FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id"
+Hirb Error: SQLite3::SQLException: no such column: branch.name: SELECT branch.name, event.title, event.date FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id"
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `initialize'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `new'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `prepare'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:296:in `block in exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:473:in `block in log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activesupport-4.2.1/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:467:in `log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:293:in `exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:347:in `select'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:32:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/query_cache.rb:70:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/querying.rb:39:in `find_by_sql'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:638:in `exec_queries'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:514:in `load'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:243:in `to_a'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/delegation.rb:46:in `to_ary'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `Array'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `determine_output_class'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:53:in `format_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:205:in `render_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:123:in `view_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:201:in `view_or_page_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:187:in `output_value'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:490:in `block (2 levels) in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:623:in `signal_status'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:486:in `block in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:245:in `block (2 levels) in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `loop'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `block in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:485:in `eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:395:in `block in start'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:110:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:9:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:68:in `console'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands.rb:17:in `<top (required)>'
+    bin/rails:8:in `require'
+    bin/rails:8:in `<main>'
+2.2.1 :029 > Event.joins(:branch).select("*")
+  Event Load (2.1ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id"
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              | name                      |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| 2  | 88      | 88    | 88      | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce4323dae8> |         | 2         | 2015-06-17 01:04:02 UTC | 2015-06-17 01:04:02 UTC | CodingDojo Silicon Valley |
+| 1  | 22      | 22    | 22      | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce43235a00> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
+| 3  | 55      | 55    | 55      |                         | #<Branch:0x007fce4322da80> | 2       | 3         | 2015-06-17 01:04:09 UTC | 2015-06-17 01:04:09 UTC | CodingDojo Los Angeles    |
+| 1  | 66      | 66    | 66      |                         | #<Branch:0x007fce43225b28> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
+| 1  | 77      | 77    | 77      | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce4321dce8> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+5 rows in set
+2.2.1 :030 > Event.all
+  Event Load (0.5ms)  SELECT "events".* FROM "events"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content       | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 1  | 88      | 88    | 88            | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce431ed070> |         | 2         | 2015-06-17 18:07:04 UTC | 2015-06-17 18:07:04 UTC |
+| 7  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:44:01 UTC | 2015-06-17 15:44:01 UTC |
+| 8  |         |       | Innotvation   |                         |                            | 1       |           | 2015-06-17 15:45:33 UTC | 2015-06-17 15:45:33 UTC |
+| 9  |         |       | Top 5 secrets |                         |                            | 2       |           | 2015-06-17 15:46:41 UTC | 2015-06-17 15:46:41 UTC |
+| 10 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:48:46 UTC | 2015-06-17 16:48:46 UTC |
+| 11 |         |       | adadad        |                         |                            | 1       |           | 2015-06-17 16:58:24 UTC | 2015-06-17 16:58:24 UTC |
+| 12 |         |       | 11            |                         |                            | 2       |           | 2015-06-17 17:41:53 UTC | 2015-06-17 17:41:53 UTC |
+| 13 | 22      | 22    | 22            | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce431d6a78> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
+| 14 | 33      | 33    | 33            |                         |                            | 2       |           | 2015-06-17 17:49:25 UTC | 2015-06-17 17:49:25 UTC |
+| 15 | 44      | 44    | 44            |                         |                            | 2       |           | 2015-06-17 17:49:31 UTC | 2015-06-17 17:49:31 UTC |
+| 16 | 55      | 55    | 55            |                         | #<Branch:0x007fce431cd360> | 2       | 3         | 2015-06-17 17:50:19 UTC | 2015-06-17 17:50:19 UTC |
+| 17 | 66      | 66    | 66            |                         | #<Branch:0x007fce468f54f0> | 2       | 1         | 2015-06-17 17:50:54 UTC | 2015-06-17 17:50:54 UTC |
+| 18 | 77      | 77    | 77            | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce468edd68> | 2       | 1         | 2015-06-17 17:51:52 UTC | 2015-06-17 17:51:52 UTC |
++----+---------+-------+---------------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+13 rows in set
+2.2.1 :031 > Event.first.branch.name
+  Event Load (0.3ms)  SELECT  "events".* FROM "events"  ORDER BY "events"."id" ASC LIMIT 1
+  Branch Load (0.3ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+ => "CodingDojo Silicon Valley" 
+2.2.1 :032 > Event.first.date
+  Event Load (0.6ms)  SELECT  "events".* FROM "events"  ORDER BY "events"."id" ASC LIMIT 1
+ => Sat, 07 Feb 2015 00:00:00 UTC +00:00 
+2.2.1 :033 > Event.joins(:branch).all
+  Event Load (0.6ms)  SELECT "events".* FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 1  | 88      | 88    | 88      | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce46870228> |         | 2         | 2015-06-17 18:07:04 UTC | 2015-06-17 18:07:04 UTC |
+| 13 | 22      | 22    | 22      | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce468688e8> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
+| 16 | 55      | 55    | 55      |                         | #<Branch:0x007fce46860d78> | 2       | 3         | 2015-06-17 17:50:19 UTC | 2015-06-17 17:50:19 UTC |
+| 17 | 66      | 66    | 66      |                         | #<Branch:0x007fce46859fa0> | 2       | 1         | 2015-06-17 17:50:54 UTC | 2015-06-17 17:50:54 UTC |
+| 18 | 77      | 77    | 77      | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce46850630> | 2       | 1         | 2015-06-17 17:51:52 UTC | 2015-06-17 17:51:52 UTC |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+5 rows in set
+2.2.1 :034 > Event.joins(:branch)
+  Event Load (0.4ms)  SELECT "events".* FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 1  | 88      | 88    | 88      | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce431c6998> |         | 2         | 2015-06-17 18:07:04 UTC | 2015-06-17 18:07:04 UTC |
+| 13 | 22      | 22    | 22      | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce431be590> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
+| 16 | 55      | 55    | 55      |                         | #<Branch:0x007fce412a6b30> | 2       | 3         | 2015-06-17 17:50:19 UTC | 2015-06-17 17:50:19 UTC |
+| 17 | 66      | 66    | 66      |                         | #<Branch:0x007fce4129eb38> | 2       | 1         | 2015-06-17 17:50:54 UTC | 2015-06-17 17:50:54 UTC |
+| 18 | 77      | 77    | 77      | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce4681acd8> | 2       | 1         | 2015-06-17 17:51:52 UTC | 2015-06-17 17:51:52 UTC |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+5 rows in set
+2.2.1 :035 > Event.joins(:branch).select("*")
+  Event Load (0.6ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              | name                      |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| 2  | 88      | 88    | 88      | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce44fe55f0> |         | 2         | 2015-06-17 01:04:02 UTC | 2015-06-17 01:04:02 UTC | CodingDojo Silicon Valley |
+| 1  | 22      | 22    | 22      | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce41285958> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
+| 3  | 55      | 55    | 55      |                         | #<Branch:0x007fce4127e2c0> | 2       | 3         | 2015-06-17 01:04:09 UTC | 2015-06-17 01:04:09 UTC | CodingDojo Los Angeles    |
+| 1  | 66      | 66    | 66      |                         | #<Branch:0x007fce431b6bb0> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
+| 1  | 77      | 77    | 77      | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce431ae8e8> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+5 rows in set
+2.2.1 :036 > Event.joins(:branch).where(name: "CodingDojo Seattle").select("*")
+  Event Load (1.5ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+SQLite3::SQLException: no such column: events.name: SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+Hirb Error: SQLite3::SQLException: no such column: events.name: SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `initialize'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `new'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `prepare'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:296:in `block in exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:473:in `block in log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activesupport-4.2.1/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:467:in `log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:293:in `exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:347:in `select'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:32:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/query_cache.rb:70:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/querying.rb:39:in `find_by_sql'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:638:in `exec_queries'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:514:in `load'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:243:in `to_a'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/delegation.rb:46:in `to_ary'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `Array'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `determine_output_class'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:53:in `format_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:205:in `render_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:123:in `view_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:201:in `view_or_page_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:187:in `output_value'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:490:in `block (2 levels) in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:623:in `signal_status'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:486:in `block in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:245:in `block (2 levels) in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `loop'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `block in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:485:in `eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:395:in `block in start'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:110:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:9:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:68:in `console'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands.rb:17:in `<top (required)>'
+    bin/rails:8:in `require'
+    bin/rails:8:in `<main>'
+2.2.1 :037 > Event.joins(:branch).select("*").where(name: 'CodingDojo Seattle')
+  Event Load (1.1ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+SQLite3::SQLException: no such column: events.name: SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+Hirb Error: SQLite3::SQLException: no such column: events.name: SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `initialize'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `new'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `prepare'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:296:in `block in exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:473:in `block in log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activesupport-4.2.1/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:467:in `log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:293:in `exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:347:in `select'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:32:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/query_cache.rb:70:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/querying.rb:39:in `find_by_sql'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:638:in `exec_queries'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:514:in `load'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:243:in `to_a'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/delegation.rb:46:in `to_ary'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `Array'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `determine_output_class'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:53:in `format_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:205:in `render_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:123:in `view_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:201:in `view_or_page_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:187:in `output_value'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:490:in `block (2 levels) in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:623:in `signal_status'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:486:in `block in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:245:in `block (2 levels) in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `loop'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `block in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:485:in `eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:395:in `block in start'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:110:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:9:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:68:in `console'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands.rb:17:in `<top (required)>'
+    bin/rails:8:in `require'
+    bin/rails:8:in `<main>'
+2.2.1 :038 > Event.joins(:branch).select("*").where(name: 'CodingDojo Seattle')
+  Event Load (0.8ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+SQLite3::SQLException: no such column: events.name: SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+Hirb Error: SQLite3::SQLException: no such column: events.name: SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `initialize'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `new'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `prepare'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:296:in `block in exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:473:in `block in log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activesupport-4.2.1/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:467:in `log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:293:in `exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:347:in `select'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:32:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/query_cache.rb:70:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/querying.rb:39:in `find_by_sql'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:638:in `exec_queries'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:514:in `load'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:243:in `to_a'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/delegation.rb:46:in `to_ary'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `Array'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `determine_output_class'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:53:in `format_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:205:in `render_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:123:in `view_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:201:in `view_or_page_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:187:in `output_value'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:490:in `block (2 levels) in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:623:in `signal_status'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:486:in `block in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:245:in `block (2 levels) in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `loop'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `block in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:485:in `eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:395:in `block in start'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:110:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:9:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:68:in `console'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands.rb:17:in `<top (required)>'
+    bin/rails:8:in `require'
+    bin/rails:8:in `<main>'
+2.2.1 :039 > Event.joins(:branch).select("*")
+  Event Load (0.4ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.3ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              | name                      |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| 2  | 88      | 88    | 88      | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce44f3deb8> |         | 2         | 2015-06-17 01:04:02 UTC | 2015-06-17 01:04:02 UTC | CodingDojo Silicon Valley |
+| 1  | 22      | 22    | 22      | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce44f36ac8> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
+| 3  | 55      | 55    | 55      |                         | #<Branch:0x007fce44f2f3e0> | 2       | 3         | 2015-06-17 01:04:09 UTC | 2015-06-17 01:04:09 UTC | CodingDojo Los Angeles    |
+| 1  | 66      | 66    | 66      |                         | #<Branch:0x007fce44f27f50> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
+| 1  | 77      | 77    | 77      | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce44f1f7b0> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+5 rows in set
+2.2.1 :040 > Event.joins(:branch).select("name")
+  Event Load (0.4ms)  SELECT name FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id"
++----+---------------------------+
+| id | name                      |
++----+---------------------------+
+|    | CodingDojo Seattle        |
+|    | CodingDojo Seattle        |
+|    | CodingDojo Seattle        |
+|    | CodingDojo Silicon Valley |
+|    | CodingDojo Los Angeles    |
++----+---------------------------+
+5 rows in set
+2.2.1 :041 > Event.joins(:branch).select("*").where(name: "CodingDojo Seattle")
+  Event Load (0.9ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+SQLite3::SQLException: no such column: events.name: SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+Hirb Error: SQLite3::SQLException: no such column: events.name: SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `initialize'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `new'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `prepare'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:296:in `block in exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:473:in `block in log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activesupport-4.2.1/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:467:in `log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:293:in `exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:347:in `select'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:32:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/query_cache.rb:70:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/querying.rb:39:in `find_by_sql'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:638:in `exec_queries'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:514:in `load'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:243:in `to_a'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/delegation.rb:46:in `to_ary'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `Array'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `determine_output_class'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:53:in `format_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:205:in `render_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:123:in `view_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:201:in `view_or_page_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:187:in `output_value'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:490:in `block (2 levels) in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:623:in `signal_status'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:486:in `block in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:245:in `block (2 levels) in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `loop'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `block in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:485:in `eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:395:in `block in start'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:110:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:9:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:68:in `console'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands.rb:17:in `<top (required)>'
+    bin/rails:8:in `require'
+    bin/rails:8:in `<main>'
+2.2.1 :042 > Event.joins(:branch).where(name: "CodingDojo Seattle")
+  Event Load (1.2ms)  SELECT "events".* FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+SQLite3::SQLException: no such column: events.name: SELECT "events".* FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+Hirb Error: SQLite3::SQLException: no such column: events.name: SELECT "events".* FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `initialize'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `new'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `prepare'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:296:in `block in exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:473:in `block in log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activesupport-4.2.1/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:467:in `log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:293:in `exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:347:in `select'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:32:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/query_cache.rb:70:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/querying.rb:39:in `find_by_sql'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:638:in `exec_queries'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:514:in `load'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:243:in `to_a'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/delegation.rb:46:in `to_ary'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `Array'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `determine_output_class'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:53:in `format_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:205:in `render_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:123:in `view_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:201:in `view_or_page_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:187:in `output_value'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:490:in `block (2 levels) in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:623:in `signal_status'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:486:in `block in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:245:in `block (2 levels) in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `loop'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `block in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:485:in `eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:395:in `block in start'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:110:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:9:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:68:in `console'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands.rb:17:in `<top (required)>'
+    bin/rails:8:in `require'
+    bin/rails:8:in `<main>'
+2.2.1 :043 > Event.joins(:branch).select("*")
+  Event Load (0.5ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              | name                      |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| 2  | 88      | 88    | 88      | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce41b189f8> |         | 2         | 2015-06-17 01:04:02 UTC | 2015-06-17 01:04:02 UTC | CodingDojo Silicon Valley |
+| 1  | 22      | 22    | 22      | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce41b11018> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
+| 3  | 55      | 55    | 55      |                         | #<Branch:0x007fce44ed5340> | 2       | 3         | 2015-06-17 01:04:09 UTC | 2015-06-17 01:04:09 UTC | CodingDojo Los Angeles    |
+| 1  | 66      | 66    | 66      |                         | #<Branch:0x007fce44ece018> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
+| 1  | 77      | 77    | 77      | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce4316ded8> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+5 rows in set
+2.2.1 :044 > Event.joins(:branch).select("*").where(name: "CodingDojo Seattle")
+  Event Load (1.0ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+SQLite3::SQLException: no such column: events.name: SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+Hirb Error: SQLite3::SQLException: no such column: events.name: SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."name" = 'CodingDojo Seattle'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `initialize'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `new'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/sqlite3-1.3.10/lib/sqlite3/database.rb:91:in `prepare'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:296:in `block in exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:473:in `block in log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activesupport-4.2.1/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract_adapter.rb:467:in `log'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/sqlite3_adapter.rb:293:in `exec_query'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:347:in `select'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/database_statements.rb:32:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/connection_adapters/abstract/query_cache.rb:70:in `select_all'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/querying.rb:39:in `find_by_sql'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:638:in `exec_queries'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:514:in `load'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation.rb:243:in `to_a'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/activerecord-4.2.1/lib/active_record/relation/delegation.rb:46:in `to_ary'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `Array'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:88:in `determine_output_class'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/formatter.rb:53:in `format_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:205:in `render_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:123:in `view_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:201:in `view_or_page_output'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/hirb-0.7.3/lib/hirb/view.rb:187:in `output_value'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:490:in `block (2 levels) in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:623:in `signal_status'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:486:in `block in eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:245:in `block (2 levels) in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `loop'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:231:in `block in each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb/ruby-lex.rb:230:in `each_top_level_statement'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:485:in `eval_input'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:395:in `block in start'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `catch'
+    /Users/chiu/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/irb.rb:394:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:110:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:9:in `start'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:68:in `console'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+    /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands.rb:17:in `<top (required)>'
+    bin/rails:8:in `require'
+    bin/rails:8:in `<main>'
+2.2.1 :045 > Event.joins(:branch).select("*").where(id:1)
+  Event Load (0.5ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."id" = ?  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              | name                      |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| 2  | 88      | 88    | 88      | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce44e78a00> |         | 2         | 2015-06-17 01:04:02 UTC | 2015-06-17 01:04:02 UTC | CodingDojo Silicon Valley |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+1 row in set
+2.2.1 :046 > Event.joins(:branch).select("*").where(branch_id:1)
+  Event Load (0.5ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" WHERE "events"."branch_id" = ?  [["branch_id", 1]]
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+--------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              | name               |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+--------------------+
+| 1  | 22      | 22    | 22      | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce44e41078> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle |
+| 1  | 66      | 66    | 66      |                         | #<Branch:0x007fce44e399e0> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle |
+| 1  | 77      | 77    | 77      | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce44e32258> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+--------------------+
+3 rows in set
+2.2.1 :047 > Event.joins(:branch).select("*").group("branch_id")
+  Event Load (0.5ms)  SELECT * FROM "events" INNER JOIN "branches" ON "branches"."id" = "events"."branch_id" GROUP BY "events"."branch_id"
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 1]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 2]]
+  Branch Load (0.1ms)  SELECT  "branches".* FROM "branches" WHERE "branches"."id" = ? LIMIT 1  [["id", 3]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              | name                      |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+| 1  | 77      | 77    | 77      | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce44e006b8> | 2       | 1         | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC | CodingDojo Seattle        |
+| 2  | 88      | 88    | 88      | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce44df97f0> |         | 2         | 2015-06-17 01:04:02 UTC | 2015-06-17 01:04:02 UTC | CodingDojo Silicon Valley |
+| 3  | 55      | 55    | 55      |                         | #<Branch:0x007fce4125e038> | 2       | 3         | 2015-06-17 01:04:09 UTC | 2015-06-17 01:04:09 UTC | CodingDojo Los Angeles    |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+---------------------------+
+3 rows in set
+2.2.1 :048 > Branch.all
+  Branch Load (0.6ms)  SELECT "branches".* FROM "branches"
++----+---------------------------+-------------------------+-------------------------+
+| id | name                      | created_at              | updated_at              |
++----+---------------------------+-------------------------+-------------------------+
+| 1  | CodingDojo Seattle        | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC |
+| 2  | CodingDojo Silicon Valley | 2015-06-17 01:04:02 UTC | 2015-06-17 01:04:02 UTC |
+| 3  | CodingDojo Los Angeles    | 2015-06-17 01:04:09 UTC | 2015-06-17 01:04:09 UTC |
++----+---------------------------+-------------------------+-------------------------+
+3 rows in set
+2.2.1 :049 > Branch.first.events
+  Branch Load (0.3ms)  SELECT  "branches".* FROM "branches"  ORDER BY "branches"."id" ASC LIMIT 1
+  Event Load (0.4ms)  SELECT "events".* FROM "events" WHERE "events"."branch_id" = ?  [["branch_id", 1]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 13 | 22      | 22    | 22      | 2015-06-22 00:00:00 UTC | #<Branch:0x007fce44dc3240> | 2       | 1         | 2015-06-17 17:47:10 UTC | 2015-06-17 17:47:10 UTC |
+| 17 | 66      | 66    | 66      |                         | #<Branch:0x007fce44dc3240> | 2       | 1         | 2015-06-17 17:50:54 UTC | 2015-06-17 17:50:54 UTC |
+| 18 | 77      | 77    | 77      | 2015-01-07 00:00:00 UTC | #<Branch:0x007fce44dc3240> | 2       | 1         | 2015-06-17 17:51:52 UTC | 2015-06-17 17:51:52 UTC |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+3 rows in set
+2.2.1 :050 > Branch.second.events
+  Branch Load (0.2ms)  SELECT  "branches".* FROM "branches"  ORDER BY "branches"."id" ASC LIMIT 1 OFFSET 1
+  Event Load (0.3ms)  SELECT "events".* FROM "events" WHERE "events"."branch_id" = ?  [["branch_id", 2]]
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content | date                    | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 1  | 88      | 88    | 88      | 2015-02-07 00:00:00 UTC | #<Branch:0x007fce44d32150> |         | 2         | 2015-06-17 18:07:04 UTC | 2015-06-17 18:07:04 UTC |
++----+---------+-------+---------+-------------------------+----------------------------+---------+-----------+-------------------------+-------------------------+
+1 row in set
+2.2.1 :051 > Brance.last.events
+NameError: uninitialized constant Brance
+	from (irb):51
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:110:in `start'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/console.rb:9:in `start'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:68:in `console'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+	from /Users/chiu/.rvm/gems/ruby-2.2.1/gems/railties-4.2.1/lib/rails/commands.rb:17:in `<top (required)>'
+	from bin/rails:8:in `require'
+	from bin/rails:8:in `<main>'
+2.2.1 :052 > Branch.last.events
+  Branch Load (0.5ms)  SELECT  "branches".* FROM "branches"  ORDER BY "branches"."id" DESC LIMIT 1
+  Event Load (0.2ms)  SELECT "events".* FROM "events" WHERE "events"."branch_id" = ?  [["branch_id", 3]]
++----+---------+-------+---------+------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| id | speaker | title | content | date | branch                     | user_id | branch_id | created_at              | updated_at              |
++----+---------+-------+---------+------+----------------------------+---------+-----------+-------------------------+-------------------------+
+| 16 | 55      | 55    | 55      |      | #<Branch:0x007fce44cdbb20> | 2       | 3         | 2015-06-17 17:50:19 UTC | 2015-06-17 17:50:19 UTC |
++----+---------+-------+---------+------+----------------------------+---------+-----------+-------------------------+-------------------------+
+1 row in set
+2.2.1 :053 > Branch.all
+  Branch Load (0.6ms)  SELECT "branches".* FROM "branches"
++----+---------------------------+-------------------------+-------------------------+
+| id | name                      | created_at              | updated_at              |
++----+---------------------------+-------------------------+-------------------------+
+| 1  | CodingDojo Seattle        | 2015-06-17 01:03:52 UTC | 2015-06-17 01:03:52 UTC |
+| 2  | CodingDojo Silicon Valley | 2015-06-17 01:04:02 UTC | 2015-06-17 01:04:02 UTC |
+| 3  | CodingDojo Los Angeles    | 2015-06-17 01:04:09 UTC | 2015-06-17 01:04:09 UTC |
++----+---------------------------+-------------------------+-------------------------+
+3 rows in set
+2.2.1 :054 > 

@@ -1,0 +1,28 @@
+<style>
+#bg{
+  background: url(/assets/photo-1428342319217-5fdaf6d7898e-b3ff359d69dcf5a0eaf6b8ac528ed681.jpeg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+</style>
+<div id="bg" style="
+
+
+">
+
+<div class="col-md-5">
+<h1>Sign In</h1>
+
+<% if flash[:error] %>
+	<p><%= flash[:error] %></p>
+<% end %>
+
+<%= simple_form_for(:session, :url => sessions_path) do |f| %>
+  <%= f.input :email, input_html: { class: 'form-control' } %>
+  <%= f.input :password, input_html: { class: 'form-control' } %>
+  <%= f.button :submit %>
+<% end %>
+</div>
+</div>

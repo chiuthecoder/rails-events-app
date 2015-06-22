@@ -1,0 +1,55 @@
+<div class="col-md-8">
+<h1>Events</h1>
+
+<label>Speaker: </label> <%= @event.speaker %><br>
+<label>Title: </label> <%= @event.title%><br>
+<label>Content: </label> <%= @event.content %><br>
+<label>Date: </label> <%= @event.date.strftime("%m/%d/%Y") %><br>
+<label>Branch: </label> <%= @event.branch.name %><br>
+<label>Avatar: </label>
+<%= image_tag @event.avatar.url %>
+
+<hr>
+Total attendees: <%= Attendee.where(event_id: @event.id).count %>
+<hr>
+<% @attendees.each do |attendee| %>
+				<%= attendee.first_name %><br>
+				<%= attendee.city%><br>
+				<%= attendee.state %><br>
+				<hr>			
+<% end %>
+
+</div>
+
+<div class="col-md-4">
+<form action='/comments' method='post'>
+  <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+  <input type='hidden' name='comment[event_id]' value='<%= @event.id %>'>
+  <input type='hidden' name='comment[user_id]' value='<%= @user.id %>'>
+  <label>Comment:</label>
+  <textarea  name='comment[comment]' placeholder='place comment here' class="form-control"></textarea>
+  <input type='submit' value='Post' class="btn btn-primary">
+</form>
+
+
+<br>
+<table class="table table-striped">
+<tr>
+	<td>Comment</td>
+	<td>Date</td>
+	<!-- <td>Actions</td> -->
+</tr>
+<% @event.comments.each do |comment| %>
+<tr>
+	
+	<td><%= comment.user.first_name %>:  <%= comment.comment %></td>
+	<td><%= comment.created_at.strftime("%m/%d/%Y") %></td>
+	
+	<!-- <a href="/comments/<%= comment.id %>" data-method='delete'>Destroy</a> -->
+	
+</tr>
+<% end %>
+</table>
+</div>
+<!-- <h2><a href="/comments">All comments</a></h2> -->
+
